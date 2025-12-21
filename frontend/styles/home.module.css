@@ -1,0 +1,150 @@
+.container {
+    margin: 16px;
+    background: #0b0b0b;
+    font-family: system-ui, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.logo {
+    font-size: 20px;
+    width: 75px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.avatar {
+    background: #e8f5e9;
+    color: #4caf50;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* Balance */
+.balance {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.balance h1 {
+    font-size: 48px;
+    margin: 0;
+}
+
+.balance p {
+    color: #777;
+    font-size: 20px;
+}
+
+/* Assets */
+.assets {
+    margin-top: 32px;
+    margin-bottom: 54px;
+}
+
+.asset h2 {
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.asset {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.assetLeft {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ethIcon {
+    font-size: 28px;
+}
+
+.assetRight {
+    text-align: right;
+}
+
+.assetRight p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.positive {
+    color: #4caf50;
+}
+
+/* Footer actions */
+.actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+}
+
+.actions button {
+    flex: 1;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.deposit {
+    background: #333;
+    border: 2px solid #333;
+}
+
+.send {
+    background: #333;
+    color: white;
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 16px;
+    }
+
+    .balance h1 {
+        font-size: 36px;
+    }
+
+    .balance p {
+        font-size: 16px;
+    }
+
+    .assetLeft {
+        gap: 12px;
+    }
+
+    .ethIcon {
+        font-size: 24px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .actions button {
+        padding: 14px;
+        font-size: 16px;
+    }
+}
