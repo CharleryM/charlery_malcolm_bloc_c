@@ -1,5 +1,5 @@
 import styles from "../styles/home.module.css";
-import { getAsset} from "@lib/api";
+import { getAssets } from "@/lib/api.js";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -60,11 +60,15 @@ export default function Page() {
 
         {/* Actions */}
         <footer className={styles.actions}>
-          <button className={styles.send}>
+          <div className={styles["grid-column-5"]}></div>
+          <div className={styles["grid-column-2"]}>
             <Link href="/transaction">
-              Send Money
+              <button className={styles.send}>
+                Send Money
+              </button>
             </Link>
-          </button>
+          </div>
+          <div className={styles["grid-column-5"]}></div>
         </footer>
       </div>
     </div>

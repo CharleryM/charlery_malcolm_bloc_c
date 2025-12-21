@@ -1,30 +1,22 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { updateAsset } from "@/lib/api";
 
-export default function TransactionPage() {
+export default function EditForm() {
   const [amount, setAmount] = useState("");
-  const router = useRouter();
 
-  const submit = () => {
-    localStorage.setItem("transaction", amount);
-    router.push("/");
-  };
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await updateAsset({ amount });
+  }
 
   return (
-    <main>
-      <h1>Nouvelle transaction</h1>
-
+    <form onSubmit={handleSubmit}>
       <input
-        type="number"
-        placeholder="Montant (+ ou -)"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-
-      <button onClick={submit}>
-        Valider
-      </button>
-    </main>
+      <button type="submit">Modifier</button>
+    </form>
   );
 }

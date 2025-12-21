@@ -94,21 +94,25 @@
 /* Footer actions */
 .actions {
     margin-top: 32px;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
     gap: 16px;
+}
+
+.grid-column-5 {
+    grid-column: span 5;
+}
+.grid-column-2 {
+    grid-column: span 2;
 }
 
 .actions button {
     flex: 1;
     padding: 16px;
+    width: 100%;
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-}
-
-.deposit {
-    background: #333;
-    border: 2px solid #333;
 }
 
 .send {
