@@ -1,7 +1,7 @@
 import mysql from "mysql2";
 
 const db = mysql.createPool({
-  host: process.env.DB_HOST, // "mysql"
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -17,8 +17,8 @@ CREATE TABLE users (
 CREATE TABLE wallet (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    amount DECIMAL(10,2) NOT NULL,     -- positif = gain, négatif = perte
-    type ENUM('gain', 'loss') NULL,    -- optionnel, selon tes besoins
+    amount DECIMAL(10,2) NOT NULL,
+    type ENUM('gain', 'loss') NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
     CONSTRAINT fk_wallet_user
