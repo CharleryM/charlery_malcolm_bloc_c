@@ -1,20 +1,18 @@
-version: "3.9"
-
 services:
-  mysql:
+  wallet_sql:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: wallet_sql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: app_user
-      MYSQL_PASSWORD: app_password
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      # - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     build: ./backend
@@ -23,12 +21,12 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DB_HOST: mysql
-      DB_USER: app_user
-      DB_PASSWORD: app_password
-      DB_NAME: app_db
+      DB_HOST: ${DB_HOST:-wallet_sql}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     depends_on:
-      - mysql
+      - wallet_sql
     volumes:
       - ./backend:/app
       - /app/node_modules
