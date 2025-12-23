@@ -1,11 +1,11 @@
-const express = require('express')
-const app = express()
-const port = 3001
+import express from "express";
+import userRoutes from "./routes/userRoutes.js";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const app = express();
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use("/users", userRoutes);
+
+app.listen(3001, () => {
+  console.log("Server running on http://localhost:3001");
+});

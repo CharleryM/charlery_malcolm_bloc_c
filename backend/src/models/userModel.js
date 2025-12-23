@@ -1,4 +1,4 @@
-import { db } from "../config/db.js";
+import { db } from "../config/database.js";
 
 export async function createUser(name, email, password) {
   const [result] = await db.query(
