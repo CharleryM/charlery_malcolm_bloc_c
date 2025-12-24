@@ -3,9 +3,9 @@
     "start": "node src/app.js"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^5.2.1",
-    "npm": "^11.6.4",
     "mysql2": "^3.3.3",
-    "bcrypt": "^5.1.0"
+    "npm": "^11.6.4"
   }
 }
