@@ -8,12 +8,25 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS wallet (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  type ENUM('gain', 'loss') NOT NULL,
+  user_id INT NOT NULL UNIQUE,
+  balance DECIMAL(18,8) NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
   CONSTRAINT fk_wallet_user
     FOREIGN KEY (user_id)
     REFERENCES users(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  wallet_id INT NOT NULL,
+  amount DECIMAL(18,8) NOT NULL,
+  type ENUM('credit', 'debit') NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_transaction_wallet
+    FOREIGN KEY (wallet_id)
+    REFERENCES wallet(id)
     ON DELETE CASCADE
 );

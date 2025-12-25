@@ -1,9 +1,11 @@
 import * as UserModel from "../models/userModel.js";
+import * as WalletModel from "../models/walletModel.js";
 
 export async function createUser(req, res) {
   const { name, email, password } = req.body;
   try {
     const id = await UserModel.createUser(name, email, password);
+    await WalletModel.createWallet(id);
     res.status(201).json({
       message: "Utilisateur créé avec succès",
       id: id
