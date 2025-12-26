@@ -18,7 +18,7 @@ export default function Page() {
         </a>
         <button className={styles.logo}>
           <Image
-            src="/images/menu.png"
+            src="/image/logos/menu_burger.png"
             alt="Digital Wallet Logo"
             width={50}
             height={50}
