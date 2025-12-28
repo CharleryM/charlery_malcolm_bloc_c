@@ -5,7 +5,7 @@ export async function getWallet(req, res) {
   const { userId } = req.params;
 
   try {
-    const wallet = await WalletModel.getWalletByUserId(userId);
+    const wallet = await WalletModel.getWalletByUser(user);
     if (!wallet) {
       return res.status(404).json({ error: "Wallet not found" });
     }
@@ -20,7 +20,7 @@ export async function getWalletTransactions(req, res) {
   const { userId } = req.params;
 
   try {
-    const wallet = await WalletModel.getWalletByUserId(userId);
+    const wallet = await WalletModel.getWalletByUser(userId);
     if (!wallet) {
       return res.status(404).json({ error: "Wallet not found" });
     }

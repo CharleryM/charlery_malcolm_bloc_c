@@ -21,15 +21,31 @@ export async function getUserById(id) {
 }
 
 export async function updateUser(id, name, email, password) {
-  const [result] = await db.query(
-    "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?",
-    [name, email, password, id]
-  );
+  let query = "UPDATE users SET name = ?, email = ?";
+  const values = [name, email];
 
+  if (password) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    query += ", password = ?";
+    values.push(hashedPassword);
+  }
+
+  query += " WHERE id = ?";
+  values.push(id);
+
+  const [result] = await db.query(query, values);
   return result.affectedRows;
 }
 
 export async function deleteUser(id) {
   const [result] = await db.query("DELETE FROM users WHERE id = ?", [id]);
   return result.affectedRows;
+}
+
+export async function getUserByEmail(email) {
+  const [rows] = await db.query(
+    "SELECT * FROM users WHERE email = ?",
+    [email]
+  );
+  return rows[0];
 }
