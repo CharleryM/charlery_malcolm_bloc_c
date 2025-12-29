@@ -6,7 +6,6 @@ import * as WalletModel from "../models/walletModel.js";
 
 export async function login(req, res) {
   const { email, password } = req.body;
-  const JWT_SECRET = process.env.JWT_SECRET
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email et mot de passe requis" });
@@ -14,20 +13,31 @@ export async function login(req, res) {
 
   try {
     const user = await UserModel.getUserByEmail(email);
-
     if (!user) {
       return res.status(401).json({ error: "Identifiants invalides" });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
-
     if (!isValid) {
-      return res.status(400).json({ error: "Identifiants invalides" });
+      return res.status(401).json({ error: "Identifiants invalides" });
     }
 
-    const token = jwt.sign({  id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "24h" });
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
 
-    res.json({ message: "Connexion réussie", token, user: { id: user.id, name: user.name, email: user.email }
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // true en HTTPS
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000
+    });
+
+    res.json({
+      message: "Connexion réussie",
+      user: { id: user.id, name: user.name, email: user.email }
     });
 
   } catch (err) {

@@ -1,19 +1,17 @@
 import jwt from "jsonwebtoken";
 
 export function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies?.token;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!token) {
     return res.status(401).json({ error: "Token manquant" });
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { id }
+    req.user = decoded; 
     next();
-  } catch {
-    res.status(401).json({ error: "Token invalide" });
+  } catch (err) {
+    return res.status(401).json({ error: "Token invalide" });
   }
 }
