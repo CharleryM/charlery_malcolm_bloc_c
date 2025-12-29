@@ -45,10 +45,24 @@ export async function login(req, res) {
   }
 }
 
-export async function createUser(req, res) {
-  const { name, email, password } = req.body;
+export async function logout(req, res) {
   try {
-    const id = await UserModel.createUser(name, email, password);
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false // true en HTTPS
+    });
+
+    res.json({ message: "Déconnexion réussie" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export async function createUser(req, res) {
+  const { userName, email, password } = req.body;
+  try {
+    const id = await UserModel.createUser(userName, email, password);
     await WalletModel.createWallet(id);
     res.status(201).json({
       message: "Utilisateur créé avec succès",

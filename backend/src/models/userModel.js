@@ -1,17 +1,17 @@
 import { db } from "../config/database.js";
 import bcrypt from "bcrypt";
 
-export async function createUser(name, email, password) {
+export async function createUser(userName, email, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
   const [result] = await db.query(
-    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-    [name, email, hashedPassword]
+    "INSERT INTO users (userName, email, password) VALUES (?, ?, ?)",
+    [userName, email, hashedPassword]
   );
   return result.insertId; 
 }
 
 export async function getAllUsers() {
-  const [rows] = await db.query("SELECT id, name, email FROM users");
+  const [rows] = await db.query("SELECT id, userName, email FROM users");
   return rows; 
 }
 
@@ -20,9 +20,9 @@ export async function getUserById(id) {
   return rows[0];
 }
 
-export async function updateUser(id, name, email, password) {
-  let query = "UPDATE users SET name = ?, email = ?";
-  const values = [name, email];
+export async function updateUser(id, userName, email, password) {
+  let query = "UPDATE users SET userName = ?, email = ?";
+  const values = [userName, email];
 
   if (password) {
     const hashedPassword = await bcrypt.hash(password, 10);
