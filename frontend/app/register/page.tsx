@@ -1,9 +1,9 @@
 "use client";
 
+import styles from "../../styles/transaction.module.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { register, login } from "@/lib/auth";
-import { userAgentFromString } from "next/server";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,70 +14,63 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  if (password !== confirm) {
-    setError("Les mots de passe ne correspondent pas");
-    return;
+    if (password !== confirm) {
+      setError("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    try {
+      await register(userName, email, password);
+      await login(email, password); // cookie JWT
+      router.push("/");
+    } catch {
+      setError("Erreur lors de l'inscription");
+    }
   }
-
-  try {
-    // 1️⃣ créer l'utilisateur
-    await register(userName, email, password);
-
-    // 2️⃣ login automatique pour récupérer le token
-    const loginData = await login(email, password);
-    localStorage.setItem("token", loginData.token);
-
-    // 3️⃣ redirection vers le dashboard
-    router.push("/dashboard");
-  } catch {
-    setError("Erreur lors de l'inscription ou de la connexion");
-  }
-}
-
 
   return (
-    <main>
-      <h1>Inscription</h1>
+    <main className={styles.container}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>Inscription</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nom d'utilisateur"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.field}>
+            <label>Nom d'utilisateur</label>
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <div className={styles.field}>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Confirmer mot de passe"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          required
-        />
+          <div className={styles.field}>
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className={styles.error}>{error}</p>}
 
-        {error && <p>{error}</p>}
-
-        <button type="submit">Créer un compte</button>
-      </form>
+          <button type="submit">Créer un compte</button>
+        </form>
+      </div>
     </main>
   );
 }

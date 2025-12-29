@@ -1,44 +1,37 @@
+"use client";
+
 import styles from "../../styles/transaction.module.css";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authFetch } from "@/lib/api";
+import { useAuthGuard } from "@/lib/authGuard";
 
 export default function TransactionPage() {
+  useAuthGuard();
+
+  const router = useRouter();
   const [amount, setAmount] = useState<number | "">("");
-  const [type, setType] = useState<TransactionType>("debit");
-  const userId = "123"; // 🔴 à remplacer par le vrai userId
+  const [type, setType] = useState<"debit" | "credit">("debit");
+  const [error, setError] = useState("");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
 
-    if (amount === "") {
-      console.error("Montant invalide");
+    if (amount === "" || amount <= 0) {
+      setError("Montant invalide");
       return;
     }
 
-    const payload = {
-      amount,
-      type,
-    };
-
     try {
-      const response = await fetch(
-        `http://localhost:3001/transaction/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      await authFetch("/transaction", {
+        method: "POST",
+        body: JSON.stringify({ amount, type }),
+      });
 
-      if (!response.ok) {
-        throw new Error("Erreur lors de l'envoi");
-      }
-
-      const data = await response.json();
-      console.log("Transaction créée :", data);
-    } catch (error) {
-      console.error("Erreur :", error);
+      router.push("/"); // retour dashboard
+    } catch {
+      setError("Erreur lors de la transaction");
     }
   }
 
@@ -49,10 +42,9 @@ export default function TransactionPage() {
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
-            <label className={styles.label}>Montant</label>
+            <label>Montant</label>
             <input
               type="number"
-              className={styles.input}
               value={amount}
               onChange={(e) =>
                 setAmount(e.target.value === "" ? "" : Number(e.target.value))
@@ -62,22 +54,19 @@ export default function TransactionPage() {
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>Type</label>
+            <label>Type</label>
             <select
-              className={styles.select}
               value={type}
-              onChange={(e) =>
-                setType(e.target.value as TransactionType)
-              }
+              onChange={(e) => setType(e.target.value as "debit" | "credit")}
             >
               <option value="debit">Débit</option>
               <option value="credit">Crédit</option>
             </select>
           </div>
 
-          <button className={styles.button} type="submit">
-            Envoyer
-          </button>
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button type="submit">Envoyer</button>
         </form>
       </div>
     </main>

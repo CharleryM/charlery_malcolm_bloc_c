@@ -1,9 +1,53 @@
+"use client";
+
 import styles from "../styles/home.module.css";
-import { getAssets } from "@/lib/api.js";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { authFetch } from "@/lib/api";
+import { useAuthGuard } from "@/lib/authGuard";
+
+type Wallet = {
+  balance: number;
+  cryptoBalance: number;
+};
+
+type Transaction = {
+  id: number;
+  amount: number;
+  type: "credit" | "debit";
+  delta: number;
+};
 
 export default function Page() {
+  useAuthGuard();
+
+  const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        const walletData = await authFetch("/wallet");
+        const txData = await authFetch("/transactions");
+
+        setWallet(walletData);
+        setTransactions(txData);
+      } catch (err) {
+        console.error("Erreur chargement dashboard");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboard();
+  }, []);
+
+  if (loading || !wallet) {
+    return <p>Chargement...</p>;
+  }
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -19,7 +63,7 @@ export default function Page() {
         <button className={styles.logo}>
           <Image
             src="/image/logos/menu_burger.png"
-            alt="Digital Wallet Logo"
+            alt="Menu"
             width={50}
             height={50}
           />
@@ -29,8 +73,8 @@ export default function Page() {
       <div className="main">
         {/* Balance */}
         <section className={styles.balance}>
-          <h1>$404.18</h1>
-          <p>1.02 ETH</p>
+          <h1>${wallet.balance.toFixed(2)}</h1>
+          <p>{wallet.cryptoBalance} ETH</p>
         </section>
 
         {/* Assets */}
@@ -38,19 +82,27 @@ export default function Page() {
           <h2>Assets</h2>
           <ul>
             <li>
-              {[1, 2, 3, 4, 5].map((_, i) => (
-                <div key={i} className={styles.asset}>
+              {transactions.map((tx) => (
+                <div key={tx.id} className={styles.asset}>
                   <div className={styles.assetLeft}>
                     <div className={styles.ethIcon}></div>
                     <div>
                       <strong>Ethereum</strong>
-                      <p>1.02 ETH</p>
+                      <p>{wallet.cryptoBalance} ETH</p>
                     </div>
                   </div>
 
                   <div className={styles.assetRight}>
-                    <strong>$404.18</strong>
-                    <p className={styles.positive}>+ $24.50</p>
+                    <strong>${tx.amount.toFixed(2)}</strong>
+                    <p
+                      className={
+                        tx.type === "credit"
+                          ? styles.positive
+                          : styles.negative
+                      }
+                    >
+                      {tx.type === "credit" ? "+" : "-"} ${tx.delta.toFixed(2)}
+                    </p>
                   </div>
                 </div>
               ))}
