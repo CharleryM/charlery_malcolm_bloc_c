@@ -13,8 +13,15 @@ export async function getWalletByUser(userId) {
     "SELECT * FROM wallet WHERE user_id = ?",
     [userId]
   );
-  return rows[0];
+
+  if (!rows[0]) return null;
+
+  return {
+    ...rows[0],
+    balance: Number(rows[0].balance),
+  };
 }
+
 
 export async function updateBalance(walletId, amount) {
   const [result] = await db.query(

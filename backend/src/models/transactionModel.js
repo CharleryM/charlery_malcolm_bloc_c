@@ -14,14 +14,13 @@ export async function createTransaction(walletId, amount, type) {
 
 export async function getTransactionsByWallet(walletId) {
   const [rows] = await db.query(
-    `
-    SELECT id, amount, type, created_at
-    FROM transactions
-    WHERE wallet_id = ?
-    ORDER BY created_at DESC
-    `,
+    "SELECT * FROM transactions WHERE wallet_id = ?",
     [walletId]
   );
 
-  return rows;
+  return rows.map(tx => ({
+    ...tx,
+    amount: Number(tx.amount),
+    delta: tx.type === "credit" ? Number(tx.amount) : -Number(tx.amount),
+  }));
 }

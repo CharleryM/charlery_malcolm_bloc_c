@@ -9,7 +9,11 @@ export async function getWallet(req, res) {
       return res.status(404).json({ error: "Wallet not found" });
     }
 
-    res.json(wallet);
+    res.json({
+      ...wallet,
+      balance: Number(wallet.balance),
+      cryptoBalance: Number(wallet.cryptoBalance),
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -26,7 +30,13 @@ export async function getWalletTransactions(req, res) {
     const transactions =
       await TransactionModel.getTransactionsByWallet(wallet.id);
 
-    res.json(transactions);
+    const normalizedTransactions = transactions.map(tx => ({
+      ...tx,
+      amount: Number(tx.amount),
+      delta: Number(tx.delta),
+    }));
+
+    res.json(normalizedTransactions);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
