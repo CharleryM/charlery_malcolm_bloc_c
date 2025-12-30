@@ -66,6 +66,17 @@ export default function RegisterPage() {
               required
             />
           </div>
+
+          <div className={styles.field}>
+            <label>Confirmer le mot de passe</label>
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+            />
+          </div>
+
           {error && <p className={styles.error}>{error}</p>}
 
           <button type="submit">Créer un compte</button>

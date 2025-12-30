@@ -29,7 +29,7 @@ export default function TransactionPage() {
         body: JSON.stringify({ amount, type }),
       });
 
-      router.push("/"); // retour dashboard
+      router.push("/");
     } catch {
       setError("Erreur lors de la transaction");
     }

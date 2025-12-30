@@ -30,7 +30,7 @@ export async function login(req, res) {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true en HTTPS
+      secure: false, 
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000
     });
@@ -49,8 +49,8 @@ export async function logout(req, res) {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: false // true en HTTPS
+      sameSite: "lax",
+      secure: false
     });
 
     res.json({ message: "Déconnexion réussie" });

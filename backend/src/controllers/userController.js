@@ -1,5 +1,4 @@
 import * as UserModel from "../models/userModel.js";
-import * as WalletModel from "../models/walletModel.js";
 
 export async function getAllUsers(req, res) {
   try {
@@ -62,6 +61,7 @@ export async function getMe(req, res) {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    console.log("ME:", res);
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

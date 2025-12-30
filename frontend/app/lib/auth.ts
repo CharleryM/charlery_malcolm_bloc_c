@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001";
+const API_URL = process.env.BACK_URL || "http://localhost:3001";
 
 export function logout() {
   localStorage.removeItem("token");
@@ -7,6 +7,7 @@ export function logout() {
 export async function login(email: string, password: string) {
   const res = await fetch(`${API_URL}/login`, {
     method: "POST",
+    credentials: "include", //accès aux cookies (CORS)
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
@@ -21,6 +22,7 @@ export async function login(email: string, password: string) {
 export async function register(userName: string, email: string, password: string) {
   const res = await fetch(`${API_URL}/register`, {
     method: "POST",
+    credentials: "include", //accès aux cookies (CORS)
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userName, email, password }),
   });
