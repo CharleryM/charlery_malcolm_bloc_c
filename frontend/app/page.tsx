@@ -25,27 +25,43 @@ export default function Page() {
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadDashboard() {
       try {
         const walletData = await authFetch("/wallet");
-        const txData = await authFetch("/transactions");
+        const txData = await authFetch("/wallet/transactions");
 
-        setWallet(walletData);
+        setWallet({
+          ...walletData,
+          balance: Number(walletData.balance),
+          cryptoBalance: Number(walletData.cryptoBalance),
+        });
+
         setTransactions(txData);
-      } catch (err) {
-        console.error("Erreur chargement dashboard");
+      } catch (err: any) {
+        console.error("Erreur chargement dashboard", err);
+        setError(err.message || "Erreur lors du chargement du dashboard");
       } finally {
         setLoading(false);
       }
     }
 
+
     loadDashboard();
   }, []);
 
-  if (loading || !wallet) {
+  if (loading) {
     return <p>Chargement...</p>;
+  }
+
+  if (error) {
+    return <p className={styles.error}>{error}</p>;
+  }
+
+  if (!wallet) {
+    return <p>Wallet non trouvé.</p>;
   }
 
   return (
@@ -81,32 +97,28 @@ export default function Page() {
         <section className={styles.assets}>
           <h2>Assets</h2>
           <ul>
-            <li>
-              {transactions.map((tx) => (
-                <div key={tx.id} className={styles.asset}>
-                  <div className={styles.assetLeft}>
-                    <div className={styles.ethIcon}></div>
-                    <div>
-                      <strong>Ethereum</strong>
-                      <p>{wallet.cryptoBalance} ETH</p>
-                    </div>
-                  </div>
-
-                  <div className={styles.assetRight}>
-                    <strong>${tx.amount.toFixed(2)}</strong>
-                    <p
-                      className={
-                        tx.type === "credit"
-                          ? styles.positive
-                          : styles.negative
-                      }
-                    >
-                      {tx.type === "credit" ? "+" : "-"} ${tx.delta.toFixed(2)}
-                    </p>
+            {transactions.map((tx) => (
+              <li key={tx.id} className={styles.asset}>
+                <div className={styles.assetLeft}>
+                  <div className={styles.ethIcon}></div>
+                  <div>
+                    <strong>Ethereum</strong>
+                    <p>{wallet.cryptoBalance} ETH</p>
                   </div>
                 </div>
-              ))}
-            </li>
+
+                <div className={styles.assetRight}>
+                  <strong>${tx.amount.toFixed(2)}</strong>
+                  <p
+                    className={
+                      tx.type === "credit" ? styles.positive : styles.negative
+                    }
+                  >
+                    {tx.type === "credit" ? "+" : "-"} ${tx.delta.toFixed(2)}
+                  </p>
+                </div>
+              </li>
+            ))}
           </ul>
         </section>
 
@@ -115,9 +127,7 @@ export default function Page() {
           <div className={styles["grid-column-5"]}></div>
           <div className={styles["grid-column-2"]}>
             <Link href="/transaction">
-              <button className={styles.send}>
-                Send Money
-              </button>
+              <button className={styles.send}>Send Money</button>
             </Link>
           </div>
           <div className={styles["grid-column-5"]}></div>

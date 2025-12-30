@@ -9,7 +9,6 @@ router.get("/me", authenticate, UserController.getMe);
 router.put("/me", authenticate, UserController.updateUser);
 router.delete("/me", authenticate, UserController.deleteUser);
 
-// (optionnel) admin
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUserById);
 

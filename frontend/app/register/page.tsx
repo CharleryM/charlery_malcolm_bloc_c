@@ -24,7 +24,7 @@ export default function RegisterPage() {
 
     try {
       await register(userName, email, password);
-      await login(email, password); // cookie JWT
+      await login(email, password); 
       router.push("/");
     } catch {
       setError("Erreur lors de l'inscription");
