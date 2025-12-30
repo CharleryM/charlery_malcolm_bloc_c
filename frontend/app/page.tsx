@@ -64,6 +64,19 @@ export default function Page() {
     return <p>Wallet non trouvé.</p>;
   }
 
+  async function handleLogout() {
+  try {
+    await authFetch("/auth/logout", {
+      method: "POST",
+    });
+
+    window.location.href = "/login";
+  } catch (err) {
+    console.error("Erreur logout", err);
+  }
+}
+
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -76,13 +89,8 @@ export default function Page() {
             height={75}
           />
         </a>
-        <button className={styles.logo}>
-          <Image
-            src="/image/logos/menu_burger.png"
-            alt="Menu"
-            width={50}
-            height={50}
-          />
+        <button className={styles.logo} onClick={handleLogout}>
+          <p>logout</p>
         </button>
       </header>
 
@@ -90,7 +98,6 @@ export default function Page() {
         {/* Balance */}
         <section className={styles.balance}>
           <h1>${wallet.balance.toFixed(2)}</h1>
-          <p>{wallet.cryptoBalance} ETH</p>
         </section>
 
         {/* Assets */}
@@ -103,7 +110,6 @@ export default function Page() {
                   <div className={styles.ethIcon}></div>
                   <div>
                     <strong>Ethereum</strong>
-                    <p>{wallet.cryptoBalance} ETH</p>
                   </div>
                 </div>
 
