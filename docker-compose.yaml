@@ -8,6 +8,10 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
     ports:
       - "3306:3306"
     volumes:
@@ -26,7 +30,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
     depends_on:
-      - wallet_sql
+      wallet_sql:
+        condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules
