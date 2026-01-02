@@ -90,7 +90,7 @@ export default function Page() {
             height={75}
           />
         </a>
-        <button onClick={handleLogout}>
+        <button className={home.logo} onClick={handleLogout}>
           <p>logout</p>
         </button>
       </header>
@@ -115,14 +115,13 @@ export default function Page() {
                 </div>
 
                 <div className={home.assetRight}>
-                  <strong>${tx.amount.toFixed(2)}</strong>
-                  <p
+                  <strong
                     className={
                       tx.type === "credit" ? home.positive : home.negative
                     }
                   >
-                    {tx.type === "credit" ? "+" : "-"} ${tx.delta.toFixed(2)}
-                  </p>
+                    ${tx.delta.toFixed(2)}
+                  </strong>
                 </div>
               </li>
             ))}

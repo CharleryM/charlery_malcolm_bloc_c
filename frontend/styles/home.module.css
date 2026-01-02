@@ -91,6 +91,10 @@
     color: #4caf50;
 }
 
+.negative {
+    color: #f44336;
+}
+
 /* Footer actions */
 .actions {
     margin-top: 32px;
