@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "../../styles/transaction.module.css";
+import form from '../../styles/form.module.css'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/auth";
@@ -25,40 +25,46 @@ export default function LoginPage() {
   }
 
   return (
-    <main className={styles.container}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>Connexion</h1>
+    <main className={form.container}>
+      <div className={form.card}>
+        <h1 className={form.title}>Connexion</h1>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label>Email</label>
+        <form className={form.form} onSubmit={handleSubmit}>
+          <div className={form.field}>
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
+              className={form.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
             />
           </div>
 
-          <div className={styles.field}>
-            <label>Mot de passe</label>
+          <div className={form.field}>
+            <label htmlFor="password">Mot de passe</label>
             <input
+              id="password"
               type="password"
+              className={form.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password"
             />
           </div>
 
-          {error && <p className={styles.error}>{error}</p>}
-          <div>
-            <button type="submit">Se connecter</button>
-            <Link href="/register">
-              <button>Créer un conte</button>
-            </Link>
-          </div>
-        </form>
-      </div>
-    </main>
+        {error && <p className={form.error}>{error}</p>}
+        <div className={form.spaveBetweenButtons}>
+          <button className={form.button} type="submit">Se connecter</button>
+          <Link href="/register">
+            <button className={form.button}>Créer un compte</button>
+          </Link>
+        </div>
+      </form>
+    </div>
+    </main >
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import styles from "../../styles/transaction.module.css";
+// import styles from "../../styles/transaction.module.css";
+import styles from '../../styles/form.module.css'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { register, login } from "@/lib/auth";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -24,7 +26,7 @@ export default function RegisterPage() {
 
     try {
       await register(userName, email, password);
-      await login(email, password); 
+      await login(email, password);
       router.push("/");
     } catch {
       setError("Erreur lors de l'inscription");
@@ -38,9 +40,11 @@ export default function RegisterPage() {
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
-            <label>Nom d'utilisateur</label>
+            <label htmlFor="username">Nom d'utilisateur</label>
             <input
+              id="username"
               type="text"
+              className={styles.input}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
@@ -48,9 +52,11 @@ export default function RegisterPage() {
           </div>
 
           <div className={styles.field}>
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
+              className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -58,9 +64,11 @@ export default function RegisterPage() {
           </div>
 
           <div className={styles.field}>
-            <label>Mot de passe</label>
+            <label htmlFor="password">Mot de passe</label>
             <input
+              id="password"
               type="password"
+              className={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -68,9 +76,11 @@ export default function RegisterPage() {
           </div>
 
           <div className={styles.field}>
-            <label>Confirmer le mot de passe</label>
+            <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
             <input
+              id="confirmPassword"
               type="password"
+              className={styles.input}
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               required
@@ -78,8 +88,14 @@ export default function RegisterPage() {
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
-
-          <button type="submit">Créer un compte</button>
+          <div className={styles.spaveBetweenButtons}>
+            <button className={styles.button} type="submit">
+              Créer un compte
+            </button>
+            <Link href="/login">
+              <button className={styles.button}>J'ai déjà un compte</button>
+            </Link>
+          </div>
         </form>
       </div>
     </main>

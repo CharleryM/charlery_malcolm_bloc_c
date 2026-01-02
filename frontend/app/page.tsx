@@ -1,6 +1,7 @@
 "use client";
 
-import styles from "../styles/home.module.css";
+import home from "../styles/home.module.css";
+import styles from '../styles/form.module.css'
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -57,7 +58,7 @@ export default function Page() {
   }
 
   if (error) {
-    return <p className={styles.error}>{error}</p>;
+    return <p className={home.error}>{error}</p>;
   }
 
   if (!wallet) {
@@ -65,23 +66,23 @@ export default function Page() {
   }
 
   async function handleLogout() {
-  try {
-    await authFetch("/auth/logout", {
-      method: "POST",
-    });
+    try {
+      await authFetch("/auth/logout", {
+        method: "POST",
+      });
 
-    window.location.href = "/login";
-  } catch (err) {
-    console.error("Erreur logout", err);
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Erreur logout", err);
+    }
   }
-}
 
 
   return (
-    <div className={styles.container}>
+    <div className={home.container}>
       {/* Header */}
-      <header className={styles.header}>
-        <a href="/" className={styles.logo}>
+      <header className={home.header}>
+        <a href="/" className={home.logo}>
           <Image
             src="/images/logo_digital_wallet.png"
             alt="Digital Wallet Logo"
@@ -89,35 +90,35 @@ export default function Page() {
             height={75}
           />
         </a>
-        <button className={styles.logo} onClick={handleLogout}>
+        <button onClick={handleLogout}>
           <p>logout</p>
         </button>
       </header>
 
       <div className="main">
         {/* Balance */}
-        <section className={styles.balance}>
+        <section className={home.balance}>
           <h1>${wallet.balance.toFixed(2)}</h1>
         </section>
 
         {/* Assets */}
-        <section className={styles.assets}>
+        <section className={home.assets}>
           <h2>Assets</h2>
           <ul>
             {transactions.map((tx) => (
-              <li key={tx.id} className={styles.asset}>
-                <div className={styles.assetLeft}>
-                  <div className={styles.ethIcon}></div>
+              <li key={tx.id} className={home.asset}>
+                <div className={home.assetLeft}>
+                  <div className={home.ethIcon}></div>
                   <div>
                     <strong>Ethereum</strong>
                   </div>
                 </div>
 
-                <div className={styles.assetRight}>
+                <div className={home.assetRight}>
                   <strong>${tx.amount.toFixed(2)}</strong>
                   <p
                     className={
-                      tx.type === "credit" ? styles.positive : styles.negative
+                      tx.type === "credit" ? home.positive : home.negative
                     }
                   >
                     {tx.type === "credit" ? "+" : "-"} ${tx.delta.toFixed(2)}
@@ -129,14 +130,14 @@ export default function Page() {
         </section>
 
         {/* Actions */}
-        <footer className={styles.actions}>
-          <div className={styles["grid-column-5"]}></div>
-          <div className={styles["grid-column-2"]}>
+        <footer className={home.actions}>
+          <div className={home["grid-column-5"]}></div>
+          <div className={home["grid-column-2"]}>
             <Link href="/transaction">
-              <button className={styles.send}>Send Money</button>
+              <button className={styles.button}>send money</button>
             </Link>
           </div>
-          <div className={styles["grid-column-5"]}></div>
+          <div className={home["grid-column-5"]}></div>
         </footer>
       </div>
     </div>
