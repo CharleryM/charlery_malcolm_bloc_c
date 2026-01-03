@@ -1,7 +1,7 @@
 "use client";
 
 import home from "../styles/home.module.css";
-import styles from '../styles/form.module.css'
+import form from '../styles/form.module.css'
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -77,11 +77,22 @@ export default function Page() {
     }
   }
 
+  async function handleDeleteAccount() {
+    try {
+      await authFetch("/users/me", {
+        method: "DELETE",
+      });
+
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Erreur logout", err);
+    }
+  }
 
   return (
     <div className={home.container}>
       {/* Header */}
-      <header className={home.header}>
+      <header className={form.spaceBetweenButtons}>
         <a href="/" className={home.logo}>
           <Image
             src="/images/logo_digital_wallet.png"
@@ -90,9 +101,14 @@ export default function Page() {
             height={75}
           />
         </a>
-        <button className={home.logo} onClick={handleLogout}>
-          <p>logout</p>
-        </button>
+        <div>
+          <button className={form.button} onClick={handleLogout}>
+            <p>logout</p>
+          </button>
+          <button className={`${form.button} ${form.marginLeft24}`} onClick={handleDeleteAccount}>
+            <p>delete account</p>
+          </button>
+        </div>
       </header>
 
       <div className="main">
@@ -133,7 +149,7 @@ export default function Page() {
           <div className={home["grid-column-5"]}></div>
           <div className={home["grid-column-2"]}>
             <Link href="/transaction">
-              <button className={styles.button}>send money</button>
+              <button className={form.button}>send money</button>
             </Link>
           </div>
           <div className={home["grid-column-5"]}></div>

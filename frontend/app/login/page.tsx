@@ -57,10 +57,10 @@ export default function LoginPage() {
           </div>
 
         {error && <p className={form.error}>{error}</p>}
-        <div className={form.spaveBetweenButtons}>
-          <button className={form.button} type="submit">Se connecter</button>
+        <div className={form.spaceBetweenButtons}>
+          <button className={form.button} type="submit">login</button>
           <Link href="/register">
-            <button className={form.button}>Créer un compte</button>
+            <button className={form.button}>sign up</button>
           </Link>
         </div>
       </form>

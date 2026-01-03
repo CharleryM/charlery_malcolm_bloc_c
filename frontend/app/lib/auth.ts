@@ -48,3 +48,10 @@ export function createTransaction(amount: number, type: "debit" | "credit") {
     body: JSON.stringify({ amount, type }),
   });
 }
+
+export function deleteMe() {
+  return authFetch("/users/me", {
+    method: "DELETE",
+  });
+}
+

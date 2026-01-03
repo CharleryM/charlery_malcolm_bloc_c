@@ -88,12 +88,12 @@ export default function RegisterPage() {
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
-          <div className={styles.spaveBetweenButtons}>
+          <div className={styles.spaceBetweenButtons}>
             <button className={styles.button} type="submit">
-              Créer un compte
+              sign up
             </button>
             <Link href="/login">
-              <button className={styles.button}>J'ai déjà un compte</button>
+              <button className={styles.button}>login</button>
             </Link>
           </div>
         </form>

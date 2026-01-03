@@ -79,11 +79,16 @@
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.spaveBetweenButtons {
+.spaceBetweenButtons {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
 }
+
+.marginLeft24 {
+    margin-left: 24px;
+}   
+
 .button:hover {
     opacity: 0.9;
 }
