@@ -27,7 +27,7 @@ export default function LoginPage() {
   return (
     <main className={form.container}>
       <div className={form.card}>
-        <h1 className={form.title}>Connexion</h1>
+        <h1 className={form.title}>Login</h1>
 
         <form className={form.form} onSubmit={handleSubmit}>
           <div className={form.field}>
@@ -44,7 +44,7 @@ export default function LoginPage() {
           </div>
 
           <div className={form.field}>
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">password</label>
             <input
               id="password"
               type="password"

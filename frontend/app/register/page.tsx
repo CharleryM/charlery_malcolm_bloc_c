@@ -36,11 +36,11 @@ export default function RegisterPage() {
   return (
     <main className={styles.container}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Inscription</h1>
+        <h1 className={styles.title}>Sing up</h1>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
-            <label htmlFor="username">Nom d'utilisateur</label>
+            <label htmlFor="username">user name</label>
             <input
               id="username"
               type="text"
@@ -64,7 +64,7 @@ export default function RegisterPage() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">password</label>
             <input
               id="password"
               type="password"
@@ -76,7 +76,7 @@ export default function RegisterPage() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
+            <label htmlFor="confirmPassword">Confirme password</label>
             <input
               id="confirmPassword"
               type="password"
